@@ -1,7 +1,7 @@
 {
   "name": "dcr-ranking-tool",
   "version": "0.1.0",
-  "description": "A tool to automate and control subjective tests on image quality assessment",
+  "description": "A minimalistic tool to automate and control subjective tests on image quality assessment",
   "private": true,
   "scripts": {
     "watch": "webpack --watch",
