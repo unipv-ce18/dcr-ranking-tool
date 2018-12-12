@@ -2,7 +2,7 @@
 import dom, {Fragment} from 'jsx-render';
 
 import './vpstyle.scss';
-import {saveData, generateJson, generateCsv} from '../io';
+import {generateCsv, generateJson, saveData} from '../io';
 
 const STORE_KEY = 'rankings';
 const OUTPUT_FILENAME_DEFAULT = 'out';
@@ -115,18 +115,20 @@ export default class Viewport {
       case '5':
         this._setCurrentRank(parseInt(e.key), true);
         break;
-      case 'S': {
-        let fn = prompt('Output filename (CSV)', OUTPUT_FILENAME_DEFAULT);
-        if (fn !== null && fn !== '')
-          saveData(generateCsv(IMAGE_FILES, this.rankings), fn + '.csv', 'text/csv');
+      case 'S':
+        if (this._checkAllFilledIn()) {
+          let fn = prompt('Output filename (CSV)', OUTPUT_FILENAME_DEFAULT);
+          if (fn !== null && fn !== '')
+            saveData(generateCsv(IMAGE_FILES, this.rankings), fn + '.csv', 'text/csv');
+        }
         break;
-      }
-      case 's': {
-        let fn = prompt('Output filename (JSON)', OUTPUT_FILENAME_DEFAULT);
-        if (fn !== null && fn !== '')
-          saveData(generateJson(IMAGE_FILES, this.rankings), fn + '.json', 'text/json');
+      case 's':
+        if (this._checkAllFilledIn()) {
+          let fn = prompt('Output filename (JSON)', OUTPUT_FILENAME_DEFAULT);
+          if (fn !== null && fn !== '')
+            saveData(generateJson(IMAGE_FILES, this.rankings), fn + '.json', 'text/json');
+        }
         break;
-      }
       case 'c':
         if (confirm('Clear all data?')) {
           this._setCurrentRank(0, false);
@@ -134,6 +136,25 @@ export default class Viewport {
         }
         break;
     }
+  }
+
+  _checkAllFilledIn() {
+    function notComplete(ranks) {
+      for (let i = 0; i < ranks.length; ++i)
+        if (ranks[i] == null || ranks[i] === 0) return i;
+      return -1;
+    }
+
+    let notRankedIdx = notComplete(this.rankings);
+
+    // If there is at least an unassessed image and the user aborts the dialog, show the image
+    if (notRankedIdx !== -1 && !confirm('There are still unassessed images in this collection, are you sure?')) {
+      this.currentIndex = notRankedIdx;
+      this.switchImage(notRankedIdx);
+      return false;
+    }
+
+    return true;
   }
 
 }
