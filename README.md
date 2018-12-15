@@ -38,7 +38,7 @@ The application is entirely operated by using the keyboard:
 | `→`, `↓` | Go to the next image |
 | `0` | Clears the rank given to the current image |
 | `1` : `5` | Apply a rank to the current image |
-| `s` | Opens a prompt to save collected as JSON (shift for CSV) |
+| `s`, `Enter` | Opens a prompt to save collected as JSON (shift for CSV) |
 | `c` | Clears all the data collected in the current session |
 
 During the experiment, the given marks are stored in your browser's

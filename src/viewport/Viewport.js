@@ -116,6 +116,7 @@ export default class Viewport {
         this._setCurrentRank(parseInt(e.key), true);
         break;
       case 'KeyS':
+      case 'Enter':
         if (this._checkAllFilledIn()) {
           let output = e.shiftKey
             ? { name: 'CSV', ext: '.csv', mime: 'text/csv', gen: generateCsv }
