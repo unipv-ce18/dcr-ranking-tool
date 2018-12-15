@@ -46,7 +46,7 @@ session storage: reloading the page won't erase them, but closing the
 window will!
 
 Once exported, you can further process the collected data on your own, for
-example, by using [this MATLAB script](matlab/resultread.m) to plot the results.
+example, by using [this MATLAB script](matlab/resultshow.m) to plot the results.
 
 ---
 
