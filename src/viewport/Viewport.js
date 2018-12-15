@@ -96,7 +96,7 @@ export default class Viewport {
   }
 
   _keyListener(e) {
-    switch (e.key) {
+    switch (e.code) {
       case 'ArrowUp':
       case 'ArrowLeft':
         if (this.currentIndex > 0)
@@ -107,29 +107,26 @@ export default class Viewport {
         if (this.currentIndex < IMAGE_FILES.length - 1)
           this.switchImage(++this.currentIndex);
         break;
-      case '0':
-      case '1':
-      case '2':
-      case '3':
-      case '4':
-      case '5':
+      case 'Digit0':
+      case 'Digit1':
+      case 'Digit2':
+      case 'Digit3':
+      case 'Digit4':
+      case 'Digit5':
         this._setCurrentRank(parseInt(e.key), true);
         break;
-      case 'S':
+      case 'KeyS':
         if (this._checkAllFilledIn()) {
-          let fn = prompt('Output filename (CSV)', OUTPUT_FILENAME_DEFAULT);
-          if (fn !== null && fn !== '')
-            saveData(generateCsv(IMAGE_FILES, this.rankings), fn + '.csv', 'text/csv');
+          let output = e.shiftKey
+            ? { name: 'CSV', ext: '.csv', mime: 'text/csv', gen: generateCsv }
+            : { name: 'JSON', ext: '.json', mime: 'text/json', gen: generateJson };
+
+          let fileName = prompt('Output filename ('+ output.name + ')', OUTPUT_FILENAME_DEFAULT);
+          if (fileName !== null && fileName !== '')
+            saveData(output.gen(IMAGE_FILES, this.rankings), fileName + output.ext, output.mime);
         }
         break;
-      case 's':
-        if (this._checkAllFilledIn()) {
-          let fn = prompt('Output filename (JSON)', OUTPUT_FILENAME_DEFAULT);
-          if (fn !== null && fn !== '')
-            saveData(generateJson(IMAGE_FILES, this.rankings), fn + '.json', 'text/json');
-        }
-        break;
-      case 'c':
+      case 'KeyC':
         if (confirm('Clear all data?')) {
           this._setCurrentRank(0, false);
           this._clearRanks();
