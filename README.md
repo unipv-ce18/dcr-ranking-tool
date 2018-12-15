@@ -39,7 +39,7 @@ The application is entirely operated by using the keyboard:
 | `0` | Clears the rank given to the current image |
 | `1` : `5` | Apply a rank to the current image |
 | `s`, `Enter` | Opens a prompt to save collected as JSON (shift for CSV) |
-| `c` | Clears all the data collected in the current session |
+| `c`, `Backspace` | Starts a new session / clears all the collected data |
 
 During the experiment, the given marks are stored in your browser's
 session storage: reloading the page won't erase them, but closing the

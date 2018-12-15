@@ -128,9 +128,10 @@ export default class Viewport {
         }
         break;
       case 'KeyC':
-        if (confirm('Clear all data?')) {
-          this._setCurrentRank(0, false);
+      case 'Backspace':
+        if (confirm('Start a new session?')) {
           this._clearRanks();
+          this.switchImage(this.currentIndex = 0);
         }
         break;
     }
@@ -147,8 +148,7 @@ export default class Viewport {
 
     // If there is at least an unassessed image and the user aborts the dialog, show the image
     if (notRankedIdx !== -1 && !confirm('There are still unassessed images in this collection, are you sure?')) {
-      this.currentIndex = notRankedIdx;
-      this.switchImage(notRankedIdx);
+      this.switchImage(this.currentIndex = notRankedIdx);
       return false;
     }
 
