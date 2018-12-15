@@ -22,7 +22,7 @@ export function saveData(data, filename, type) {
 export function generateCsv(imgNames, rankings) {
   let lines = [];
   for (let i = 0; i < imgNames.length; ++i)
-    lines.push(imgNames[i] + ',' + (rankings[i] != null ? rankings[i] : 0));
+    lines.push(imgNames[i] + ',' + (rankings[i] != null ? (rankings[i].r + ',' + rankings[i].t) : '0,0'));
   lines.push('');
   return lines.join('\r\n');
 }
@@ -30,6 +30,6 @@ export function generateCsv(imgNames, rankings) {
 export function generateJson(imgNames, rankings) {
   let obj = {};
   for (let i = 0; i < imgNames.length; ++i)
-    obj[imgNames[i]] = (rankings[i] != null ? rankings[i] : 0);
+    obj[imgNames[i]] = (rankings[i] != null ? rankings[i] : {r:0, t: 0});
   return JSON.stringify(obj);
 }

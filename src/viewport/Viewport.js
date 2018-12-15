@@ -66,11 +66,13 @@ export default class Viewport {
 
     this.imageElement.src = IMAGES_PATH + IMAGE_FILES[idx];
     this.counterElement.textContent = (idx + 1) + '/' + IMAGE_FILES.length;
+    this.lastSwitchTime = Date.now();
+    console.log('Switched to image #%d', idx + 1);
 
     if (this.props.onImageSwitch != null)
       this.props.onImageSwitch(idx);
 
-    let rank = this.rankings[idx];
+    let rank = this.rankings[idx] != null ? this.rankings[idx].r : null;
     this._setCurrentRank(rank, false);
   }
 
@@ -85,8 +87,10 @@ export default class Viewport {
       this.markRadios[rank - 1].checked = true;
     }
     if (store) {
-      this.rankings[this.currentIndex] = rank !== 0 ? rank : undefined;
+      let selTime = Date.now() - this.lastSwitchTime;
+      this.rankings[this.currentIndex] = rank !== 0 ? {r: rank, t: selTime} : undefined;
       sessionStorage.setItem(STORE_KEY, JSON.stringify(this.rankings));
+      console.log('Image #%d assessed, rating %d (in %dms)', this.currentIndex + 1, rank, selTime);
     }
   }
 
@@ -138,13 +142,7 @@ export default class Viewport {
   }
 
   _checkAllFilledIn() {
-    function notComplete(ranks) {
-      for (let i = 0; i < ranks.length; ++i)
-        if (ranks[i] == null || ranks[i] === 0) return i;
-      return -1;
-    }
-
-    let notRankedIdx = notComplete(this.rankings);
+    let notRankedIdx = this.rankings.findIndex(e => e == null);
 
     // If there is at least an unassessed image and the user aborts the dialog, show the image
     if (notRankedIdx !== -1 && !confirm('There are still unassessed images in this collection, are you sure?')) {
