@@ -19,6 +19,7 @@
   background-color: rgba(30, 30, 30, .6);
   > * {
     float: left;
+    line-height: 24px;
   }
 }
 
@@ -26,4 +27,37 @@
   font-family: Verdana, sans-serif;
   color: white;
   margin-right: 6px;
+}
+
+#rating {
+  margin-right: 8px;
+  > * {
+    margin-top: 7px;
+  }
+}
+
+.vp-button {
+  color: #ddd;
+  display: block;
+  height: 24px;
+  margin-left: 8px;
+  transition: color .25s;
+}
+
+@keyframes btn-complete-anim {
+  0% { color: #ddd; }
+  20% { color: aqua; }
+  100% { color: #ddd;  }
+}
+
+#btn-submit:not(:hover).complete {
+  animation: btn-complete-anim 1.5s infinite;
+}
+
+#btn-submit:hover {
+  color: lawngreen;
+}
+
+#btn-clear:hover {
+  color: darkorange;
 }
